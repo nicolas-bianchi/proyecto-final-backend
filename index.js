@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
-app.listen(3001, () =>{
-    console.log("server 3001");
+app.listen(3001, () => {
+  console.log("server 3001");
 });
+
+console.log("Hola");
