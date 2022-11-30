@@ -12,8 +12,12 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
+const users = require("./routes/users");
+const estates = require("./routes/estates");
+
+app.use("/api", users);
+app.use("/api", estates);
+
 app.listen(3001, () => {
   console.log("server 3001");
 });
-
-console.log("Hola");
