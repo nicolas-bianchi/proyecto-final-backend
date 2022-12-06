@@ -33,32 +33,9 @@ exports.consultEstateBySearchBar = (req, res) => {
     tipoInmueble,
     barrio
   } = req.body;
-  
-  console.log(req)
-
   knex("direcciones")
   .join("inmuebles", "direcciones.direccionId", "=", "inmuebles.direccionId")
-  .modify(function(queryBuilder) {
-    if (dormitorios) {
-        queryBuilder.where("inmuebles.dormitorios", dormitorios);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (operacion) {
-        queryBuilder.where("inmuebles.operacion", operacion);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (tipoInmueble) {
-        queryBuilder.where("inmuebles.tipoInmueble", tipoInmueble);
-    }
-})
-.modify(function(queryBuilder) {
-  if (barrio) {
-      queryBuilder.where("direcciones.barrio", barrio);
-  }
-})
-
+  {.where("inmuebles.dormitorios", dormitorios)}.andWhere("inmuebles.operacion", operacion).andWhere("inmuebles.tipoInmueble", tipoInmueble).andWhere("direcciones.barrio", barrio)
   .then((response) => {
     res.json(response);
   })
