@@ -3,6 +3,7 @@ const {
   newPublication,
   consultAllEstates,
   consultEstatesById,
+  consultEstateBySearchBar,
 } = require("../controllers/estates");
 const { runValidation } = require("../validations");
 const {
@@ -13,6 +14,7 @@ const router = express.Router();
 
 router.get("/estates/publications", consultAllEstates);
 router.get("/estates/publications/:id", consultEstatesById);
+router.post("/estates/searchBar", consultEstateBySearchBar);
 router.post(
   "/estates/newPublication",
   // newPublicationValidator,

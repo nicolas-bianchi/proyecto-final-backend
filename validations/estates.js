@@ -33,32 +33,9 @@ exports.consultEstateBySearchBar = (req, res) => {
     tipoInmueble,
     barrio
   } = req.body;
-  
-  console.log(req)
-
   knex("direcciones")
   .join("inmuebles", "direcciones.direccionId", "=", "inmuebles.direccionId")
-  .modify(function(queryBuilder) {
-    if (dormitorios) {
-        queryBuilder.where("inmuebles.dormitorios", dormitorios);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (operacion) {
-        queryBuilder.where("inmuebles.operacion", operacion);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (tipoInmueble) {
-        queryBuilder.where("inmuebles.tipoInmueble", tipoInmueble);
-    }
-})
-.modify(function(queryBuilder) {
-  if (barrio) {
-      queryBuilder.where("direcciones.barrio", barrio);
-  }
-})
-
+  {.where("inmuebles.dormitorios", dormitorios)}.andWhere("inmuebles.operacion", operacion).andWhere("inmuebles.tipoInmueble", tipoInmueble).andWhere("direcciones.barrio", barrio)
   .then((response) => {
     res.json(response);
   })
@@ -79,7 +56,6 @@ exports.newPublication = async (req, res) => {
     ciudad,
     barrio,
     calle,
-    link,
   } = req.body;
   try {
     const newDirecciones = await knex("direcciones")
@@ -98,7 +74,6 @@ exports.newPublication = async (req, res) => {
       gastosComunes: gastosComunes,
       metrosCuadrados: metrosCuadrados,
       direccionId: newDirecciones[0].direccionId,
-      link: link,
     });
     res.json({ message: "Se ha ingresado el inmueble con éxito" });
   } catch (error) {
@@ -108,7 +83,7 @@ exports.newPublication = async (req, res) => {
 
 // PRUEBA FORMIDABLE Y FS
 // exports.newPublication = async (req, res) => {
-//   const form = new formidable.IncomingForm();
+//   let form = new formidable.IncomingForm();
 //   form.keepExtensions = true;
 //   try {
 //     form.parse(req, (err, fields, files) => {
@@ -141,17 +116,6 @@ exports.newPublication = async (req, res) => {
 //             barrio: barrio,
 //             calle: calle,
 //           });
-//         let fileData;
-//         let fileType;
-//         if (files.file) {
-//           if (files.file.size > 1000000) {
-//             return res.status(400).json({
-//               error: "Tamaño maximo de la imagen 1MB",
-//             });
-//           }
-//           fileData = fs.readFileSync(files.file.filepath);
-//           fileType = files.file.mimetype;
-//         }
 //         const newInmuebles = knex("inmuebles").insert({
 //           precio: precio,
 //           dormitorios: dormitorios,
@@ -159,29 +123,37 @@ exports.newPublication = async (req, res) => {
 //           operacion: operacion,
 //           gastosComunes: gastosComunes,
 //           metrosCuadrados: metrosCuadrados,
-//           // direccionId: newDirecciones[0].direccionId,
-//           filedata: fileData,
-//           filetype: fileType,
+//           direccionId: newDirecciones[0].direccionId,
 //         });
-
-//         // knex("inmuebles")
-//         //   .where("direccionId", newDirecciones[0].direccionId)
-//         //   .update({
-
-//         //   })
-//         //   .then(() => {
-//         //     res.json({ success: true });
-//         //     return;
-//         //   })
-//         //   .catch((error) => {
-//         //     res.status(400).json({ error: error.message });
-//         //     return;
-//         //   });
-//         // }
 //         res.json({ message: "Se ha ingresado el inmueble con éxito" });
 //       } catch (error) {
-//         // res.status(400).json({ error: error.message });
-//         throw error;
+//         res.status(400).json({ error: error.message });
+//       }
+
+//       let fileData;
+//       let fileType;
+//       if (files.file) {
+//         if (files.file.size > 1000000) {
+//           return res.status(400).json({
+//             error: "Tamaño maximo de la imagen 1MB",
+//           });
+//         }
+//         fileData = fs.readFileSync(files.file.filepath);
+//         fileType = files.file.mimetype;
+//         knex("inmuebles")
+//           .where("direccionId", newDirecciones[0].direccionId)
+//           .update({
+//             filedata: fileData,
+//             filetype: fileType,
+//           })
+//           .then(() => {
+//             res.json({ success: true });
+//             return;
+//           })
+//           .catch((error) => {
+//             res.status(400).json({ error: error.message });
+//             return;
+//           });
 //       }
 //     });
 //   } catch (e) {
