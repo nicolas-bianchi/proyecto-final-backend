@@ -17,8 +17,8 @@ router.get("/estates/publications/:id", consultEstatesById);
 router.post("/estates/searchBar", consultEstateBySearchBar);
 router.post(
   "/estates/newPublication",
-  newPublicationValidator,
-  runValidation,
+  // newPublicationValidator,
+  // runValidation,
   newPublication
 );
 
