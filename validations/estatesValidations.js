@@ -51,3 +51,29 @@ exports.newPublicationValidator = [
     .isString()
     .withMessage("La calle no puede contener solo números"),
 ];
+
+// exports.editPublicationValidator = [
+//   check("precio").isNumeric().withMessage("El precio debe ser un número"),
+//   check("dormitorios")
+//     .isNumeric()
+//     .withMessage("La cantidad de dormitorios debe ser un número"),
+//   check("tipoInmueble")
+//     .isString()
+//     .withMessage("El tipo de inmueble no debe contener números"),
+//   check("operacion")
+//     .isString()
+//     .withMessage("El tipo de operación no debe contener números"),
+//   check("gastosComunes")
+//     .isNumeric()
+//     .withMessage("Los gastos comunes deben ser un número"),
+//   check("metrosCuadrados")
+//     .isNumeric()
+//     .withMessage("Los metros cuadrados deben ser un número"),
+//   check("departamento")
+//     .isString()
+//     .withMessage("El departamento no debe contener números"),
+//   check("barrio").isString().withMessage("El barrio no debe contener números"),
+//   check("calle")
+//     .isString()
+//     .withMessage("La calle no puede contener solo números"),
+// ];

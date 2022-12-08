@@ -17,7 +17,7 @@ exports.consultEstatesById = (req, res) => {
   id = req.params.id;
   knex("direcciones")
     .join("inmuebles", "direcciones.direccionId", "=", "inmuebles.direccionId")
-    .where("direcciones.direccionId", id) 
+    .where("direcciones.direccionId", id)
     .then((response) => {
       res.json(response);
     })
@@ -27,45 +27,37 @@ exports.consultEstatesById = (req, res) => {
 };
 
 exports.consultEstateBySearchBar = (req, res) => {
-  const {
-    dormitorios,
-    operacion,
-    tipoInmueble,
-    barrio
-  } = req.body;
-  
-  console.log(req)
-
+  const { dormitorios, operacion, tipoInmueble, barrio } = req.body;
   knex("direcciones")
-  .join("inmuebles", "direcciones.direccionId", "=", "inmuebles.direccionId")
-  .modify(function(queryBuilder) {
-    if (dormitorios) {
+    .join("inmuebles", "direcciones.direccionId", "=", "inmuebles.direccionId")
+    .modify(function (queryBuilder) {
+      if (dormitorios) {
         queryBuilder.where("inmuebles.dormitorios", dormitorios);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (operacion) {
+      }
+    })
+    .modify(function (queryBuilder) {
+      if (operacion) {
         queryBuilder.where("inmuebles.operacion", operacion);
-    }
-  })
-  .modify(function(queryBuilder) {
-    if (tipoInmueble) {
+      }
+    })
+    .modify(function (queryBuilder) {
+      if (tipoInmueble) {
         queryBuilder.where("inmuebles.tipoInmueble", tipoInmueble);
-    }
-})
-.modify(function(queryBuilder) {
-  if (barrio) {
-      queryBuilder.where("direcciones.barrio", barrio);
-  }
-})
+      }
+    })
+    .modify(function (queryBuilder) {
+      if (barrio) {
+        queryBuilder.where("direcciones.barrio", barrio);
+      }
+    })
 
-  .then((response) => {
-    res.json(response);
-  })
-  .catch((error) => {
-    res.status(400).json({ error: error.message });
-  });
-}
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error.message });
+    });
+};
 
 exports.newPublication = async (req, res) => {
   const {
@@ -98,13 +90,57 @@ exports.newPublication = async (req, res) => {
       gastosComunes: gastosComunes,
       metrosCuadrados: metrosCuadrados,
       direccionId: newDirecciones[0].direccionId,
-      link: link,
+      linkImg: link,
     });
     res.json({ message: "Se ha ingresado el inmueble con éxito" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
+// exports.editPublication = (req, res) => {
+//   id = req.params.id;
+//   const {
+//     precio,
+//     dormitorios,
+//     tipoInmueble,
+//     operacion,
+//     gastosComunes,
+//     metrosCuadrados,
+//     barrio,
+//     calle,
+//     link,
+//   } = req.body;
+//   knex("direcciones")
+//     .where("direccionId", id)
+//     .update({ ciudad: "Montevideo", barrio: barrio, calle: calle })
+//     .then((response) => {
+//       knex("inmuebles")
+//         .where("direccionId", id)
+//         .update(
+//           {
+//             precio: precio,
+//             dormitorios: dormitorios,
+//             tipoInmueble: tipoInmueble,
+//             operacion: operacion,
+//             gastosComunes: gastosComunes,
+//             metrosCuadrados: metrosCuadrados,
+//             linkImg: link,
+//           },
+
+//           ["precio", "metrosCuadrados"]
+//         )
+//         .then((respuesta) => {
+//           res.json({
+//             casa: respuesta[0],
+//             message: "Se ha actualizado correctamente",
+//           });
+//         });
+//     })
+//     .catch((error) => {
+//       res.status(400).json({ error: error.message });
+//     });
+// };
 
 // PRUEBA FORMIDABLE Y FS
 // exports.newPublication = async (req, res) => {
